@@ -1,0 +1,36 @@
+{
+  "name": "aws-lambda-rpc",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">= 6.10.0"
+  },
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Swilly",
+    "email": "kaori573@gmail.com"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.105.0",
+    "path": "^0.12.7",
+    "through2": "^2.0.3"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/MIT"
+    }
+  ],
+  "keywords": [
+    "aws",
+    "lambda",
+    "rpc"
+  ],
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
