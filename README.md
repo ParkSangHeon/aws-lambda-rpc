@@ -1,11 +1,11 @@
 # aws-lambda-rpc
 Call aws lambda function like RPC
 
-# Use
+# Usage
 
 ## Step 1. Create lambda function
 
-### index.js
+### ./lambda_function/helloWorld/index.js
 ```js
 'use strict'
 
@@ -15,8 +15,9 @@ exports.handler = (event, context, callback) => {
 }; // handler()
 ```
 
-# Configuration
+## Step 2. Configuration
 
+### ./config/deploy.json
 ```js
 {
     "development" : {
@@ -26,7 +27,7 @@ exports.handler = (event, context, callback) => {
             {
                 "FunctionName" : "helloWorld",
                 "Type" : "invoke",
-                "Description" : "RPC 테스트", 
+                "Description" : "helloWorld RPC", 
                 "Handler" : "index.handler", 
                 "Environment" : {
                     "Variables" : {
@@ -50,4 +51,39 @@ exports.handler = (event, context, callback) => {
         "functions" : []
     }
 }
+```
+
+## Step 3. Deploy Lambda
+
+### gulpfile.js
+```js
+const RPC = require('aws-lambda-rpc')('./config/deploy.json');
+
+gulp.task('deploy', () => {
+    gulp.src('./lambda_function/helloWorld/**/*')
+    .pipe(zip(target + '.zip'))
+    .pipe(RPC.deploy(target))    
+});
+
+```
+```bash
+    gulp deploy
+```
+
+## Step 4. Call Lambda
+    
+```js
+'use strict'
+
+const RPC = require('aws-lambda-rpc')('./config/deploy.json');
+
+RPC.helloWorld('Hello,', 'World!').then((result)=>{
+    console.log(result);
+});
+
+```
+
+### Result
+```
+   "Hello, World!" 
 ```
