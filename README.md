@@ -61,8 +61,8 @@ const RPC = require('aws-lambda-rpc')('./config/deploy.json');
 
 gulp.task('deploy', () => {
     gulp.src('./lambda_function/helloWorld/**/*')
-    .pipe(zip(target + '.zip'))
-    .pipe(RPC.deploy(target))    
+    .pipe(zip('helloWorld.zip'))
+    .pipe(RPC.deploy('helloWorld'))    
 });
 
 ```
