@@ -11,7 +11,7 @@ Call aws lambda function like RPC
 
 exports.handler = (event, context, callback) => {
     console.log("Receive event :", event);
-    callback(null, 'Hello, World!');
+    callback(null, `${event[0]} ${event[1]}`);
 }; // handler()
 ```
 
