@@ -67,7 +67,7 @@ gulp.task('deploy', () => {
 
 ```
 ```bash
-    gulp deploy
+    $ gulp deploy
 ```
 
 ## Step 4. Call Lambda
