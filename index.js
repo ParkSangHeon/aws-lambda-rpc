@@ -57,11 +57,6 @@ class RPC {
         var self = this;
         var dummy = (function(...args){
             return new Promise((resolve, reject) => {
-                console.log("### Call Promise :", func_name);
-                args.forEach((arg) => {
-                    console.log("### ARG :", arg);
-                });
-
                 let params = {
                     FunctionName : func_name,
                     InvocationType : "RequestResponse",
@@ -71,26 +66,31 @@ class RPC {
 
                 self._lambda.invoke(params, (err, data) => {
                     if (err) {
-                        console.log("### ERR :", err);
+                        console.error("### ERR :", err);
                         reject(err);
                         return;
                     } // if
 
-                    if (data.StatusCode != '200') {
-                        reject({
-                            code : data.StatusCode,
-                            error : 'Lambda 응답실패'
-                        });
+                    if (data.StatusCode !== 200) {
+                        console.log("### Status Code NOT Matched");
+                        reject(data);
                         return;
                     } // if
                     
                     // Success
-                    // console.log("### DATA :", data);
-                    let b = new Buffer(data.LogResult, 'base64');
-                    console.log("## Log ################################");
-                    console.log(b.toString());
-                    console.log("#######################################");
-                    resolve(data.Payload);
+                    data.Log = new Buffer(data.LogResult, 'base64').toString();
+                    // console.log("## Log ################################");
+                    // console.log(data.Log);
+                    // console.log("#######################################");
+
+                    let result = JSON.parse(data.Payload);
+                    if (result.errorMessage !== undefined && result.errorMessage !== null) {
+                        console.log("### LAMBDA RPC ERROR");
+                        reject(data);
+                    } else {
+                        console.log("### LAMBDA RPC SUCCESS");
+                        resolve(data);
+                    } // if
                 }); // lambda.invoke()
 
                 
